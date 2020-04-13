@@ -1,33 +1,39 @@
+import 'react-native-gesture-handler';
 import { StyleSheet, Text, View } from 'react-native';
+import { ThemeProvider, Button } from 'react-native-elements';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import React, { Component } from "react";
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { apiResponse: "" };
-    }
 
-    callAPI() {
-        fetch("http://localhost:9000/testAPI")
-            .then(res => res.text())
-            .then(res => this.setState({ apiResponse: res }))
-            .catch(err => err);
-    }
+import HomeScreen from './components/HomeScreen';
+import ChatScreen from './components/ChatScreen';
 
-    componentDidMount() {
-        this.callAPI();
-    }
+export default class App extends Component {
 
     render() {
-        return (
-            <View style={styles.container}>
-                <Text>Welcome to React Native</Text>
-                <Text>With Integration with API</Text>
-                <Text>Data from API: {this.state.apiResponse}</Text>
-            </View>
-        );
+        return <AppContainer />;
     }
 }
+
+const AppNavigator = createStackNavigator({
+    Home: {
+      screen: HomeScreen
+    },
+    Chat: {
+      screen: ChatScreen
+    }
+  },{
+    initialRouteName: "Home"
+  });
+  
+const AppContainer = createAppContainer(AppNavigator);
+
+const theme = {
+    Button: {
+      raised: true,
+    },
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -37,5 +43,3 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
-
-export default App;
