@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { ThemeProvider, Button } from 'react-native-elements';
 
 import React, { Component } from "react";
@@ -8,7 +8,10 @@ export default class ChatScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { apiResponse: "" };
+        this.state = { 
+            apiResponse: "", 
+            movies: []
+        };
     }
 
     callAPI() {
@@ -18,8 +21,16 @@ export default class ChatScreen extends Component {
             .catch(err => err);
     }
 
+    callMoviesAPI() {
+        fetch("https://reactnative.dev/movies.json")
+            .then(res => res.json())
+            .then((json) => this.setState({ movies: json.movies }))
+            .catch(err => err);
+    }
+
     componentDidMount() {
         this.callAPI();
+        this.callMoviesAPI();
     }
 
     render() {
@@ -32,6 +43,16 @@ export default class ChatScreen extends Component {
                         onPress={() => this.props.navigation.navigate('Home')}
                     />
                 </ThemeProvider>
+                <View>
+                      <Text>Data from external API: </Text>
+        <FlatList
+            data={this.state.movies}
+            keyExtractor={({ id }, index) => id}
+            renderItem={({ item }) => (
+              <Text>{item.title}, {item.releaseYear}</Text>
+            )}
+          />
+      </View>
             </View>
         );
     }
