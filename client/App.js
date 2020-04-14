@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler';
-import { StyleSheet, Text, View } from 'react-native';
-import { ThemeProvider, Button } from 'react-native-elements';
+import { StyleSheet} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -12,34 +11,23 @@ import ChatScreen from './components/ChatScreen';
 export default class App extends Component {
 
     render() {
-        return <AppContainer />;
+        return (
+            <NavigationContainer> 
+                <Stack.Navigator initialRouteName="Home" screenOptions={{ gestureEnabled: false }}>
+                    <Stack.Screen
+                        name="Home"
+                        component={HomeScreen}
+                        options={{ title: 'Home Screen' }}
+                    />
+                    <Stack.Screen
+                        name="Chat"
+                        component={ChatScreen}
+                        options={{ title: 'Chat Screen' }}
+                    />
+            </Stack.Navigator>
+          </NavigationContainer>
+        );
     }
 }
 
-const AppNavigator = createStackNavigator({
-    Home: {
-      screen: HomeScreen
-    },
-    Chat: {
-      screen: ChatScreen
-    }
-  },{
-    initialRouteName: "Home"
-  });
-  
-const AppContainer = createAppContainer(AppNavigator);
-
-const theme = {
-    Button: {
-      raised: true,
-    },
-};
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
+const Stack = createStackNavigator();
