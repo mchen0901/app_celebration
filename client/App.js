@@ -1,41 +1,33 @@
-import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
+import { StyleSheet} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import React, { Component } from "react";
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { apiResponse: "" };
-    }
 
-    callAPI() {
-        fetch("http://localhost:9000/testAPI")
-            .then(res => res.text())
-            .then(res => this.setState({ apiResponse: res }))
-            .catch(err => err);
-    }
+import HomeScreen from './components/HomeScreen';
+import ChatScreen from './components/ChatScreen';
 
-    componentDidMount() {
-        this.callAPI();
-    }
+export default class App extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text>Welcome to React Native</Text>
-                <Text>With Integration with API</Text>
-                <Text>Data from API: {this.state.apiResponse}</Text>
-            </View>
+            <NavigationContainer> 
+                <Stack.Navigator initialRouteName="Home" screenOptions={{ gestureEnabled: false }}>
+                    <Stack.Screen
+                        name="Home"
+                        component={HomeScreen}
+                        options={{ title: 'Home Screen' }}
+                    />
+                    <Stack.Screen
+                        name="Chat"
+                        component={ChatScreen}
+                        options={{ title: 'Chat Screen' }}
+                    />
+            </Stack.Navigator>
+          </NavigationContainer>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});
-
-export default App;
+const Stack = createStackNavigator();
