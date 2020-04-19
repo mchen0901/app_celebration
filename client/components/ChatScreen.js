@@ -1,8 +1,10 @@
 import 'react-native-gesture-handler';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, ScrollView, TextInput } from 'react-native';
 import { ThemeProvider, Button } from 'react-native-elements';
 
 import React, { Component } from "react";
+
+// var SampleArray = ["ONE", "TWO"];
 
 export default class ChatScreen extends Component {
 
@@ -10,9 +12,25 @@ export default class ChatScreen extends Component {
         super(props);
         this.state = { 
             apiResponse: "", 
-            movies: []
+            movies: [], 
+            message: ""
         };
     }
+
+  //   AddItemsToArray=(text)=>{
+ 
+  //     //Adding Items To Array.
+  //     SampleArray.push( text );
+ 
+  //     // Showing the complete Array on Screen Using Alert.
+  //     Alert.alert(SampleArray.toString());
+ 
+  // }
+
+    handleMessage = (text) => {
+      this.setState({ message: text })
+      // SampleArray.push(text)
+   }
 
     callAPI() {
         fetch("http://localhost:9000/testAPI")
@@ -44,7 +62,7 @@ export default class ChatScreen extends Component {
                     />
                 </ThemeProvider>
                 <View>
-                      <Text>Data from external API: </Text>
+        {/*            <Text>Data from external API: </Text>
         <FlatList
             data={this.state.movies}
             keyExtractor={({ id }, index) => id}
@@ -52,6 +70,21 @@ export default class ChatScreen extends Component {
               <Text>{item.title}, {item.releaseYear}</Text>
             )}
           />
+      */}
+
+        <ScrollView>
+      <Text>Chat Box here! </Text>
+      <Text>{this.state.message}</Text>
+      <TextInput
+        style={{
+          height: 40,
+          borderColor: 'gray',
+          borderWidth: 1
+        }}
+        onChangeText={this.handleMessage}
+        defaultValue="Your message"
+      />
+    </ScrollView>
       </View>
             </View>
         );
